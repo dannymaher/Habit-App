@@ -24,7 +24,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Habit App Models\Habit App Models.csproj" />
-    <ProjectReference Include="..\Habit App SD\Habit App SD.csproj" />
+    <ProjectReference Include="..\Habit App SD\Habit App Utility.csproj" />
   </ItemGroup>
 
 </Project>

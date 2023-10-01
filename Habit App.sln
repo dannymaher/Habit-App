@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Habit App Data", "Habit App
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Habit App Models", "Habit App Models\Habit App Models.csproj", "{9388C6C7-6EBF-4A73-AB4C-2B3071BE68EA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Habit App SD", "Habit App SD\Habit App SD.csproj", "{369602D4-C75F-45C2-8C64-A1E3B818F9E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Habit App Utility", "Habit App SD\Habit App Utility.csproj", "{369602D4-C75F-45C2-8C64-A1E3B818F9E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

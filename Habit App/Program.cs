@@ -1,5 +1,7 @@
 using Habit_App_Data;
 using Habit_App_Data.DbInitializer;
+using Habit_App_Data.Repository.IRepository;
+using Habit_App_SD;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
@@ -12,8 +14,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlSer
 builder.Services.AddScoped<IDbInitializer, DbInitializer>();
 
 builder.Services.AddRazorPages();
-
+builder.Services.AddScoped<IEmailSender,EmailSender>();
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+builder.Services.AddScoped<IUnitOfWork,IUnitOfWork>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

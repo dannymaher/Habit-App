@@ -1,4 +1,4 @@
-﻿namespace Habit_App_SD
+﻿namespace Habit_App_Utility
 {
     public class SD
     {
