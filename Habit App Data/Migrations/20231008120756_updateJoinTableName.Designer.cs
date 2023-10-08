@@ -4,6 +4,7 @@ using Habit_App_Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Habit_App_Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231008120756_updateJoinTableName")]
+    partial class updateJoinTableName
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,26 +25,17 @@ namespace Habit_App_Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("Habit_App_Models.ApplicationUserHabit", b =>
+            modelBuilder.Entity("ApplicationUserHabit", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("HabitsId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("HabitId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
+                    b.Property<string>("UsersId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.HasKey("HabitsId", "UsersId");
 
-                    b.HasIndex("HabitId");
-
-                    b.HasIndex("UserId");
+                    b.HasIndex("UsersId");
 
                     b.ToTable("ApplicationUserHabit");
                 });
@@ -280,23 +274,19 @@ namespace Habit_App_Data.Migrations
                     b.HasDiscriminator().HasValue("ApplicationUser");
                 });
 
-            modelBuilder.Entity("Habit_App_Models.ApplicationUserHabit", b =>
+            modelBuilder.Entity("ApplicationUserHabit", b =>
                 {
-                    b.HasOne("Habit_App_Models.Habit", "Habit")
-                        .WithMany("UserHabits")
-                        .HasForeignKey("HabitId")
+                    b.HasOne("Habit_App_Models.Habit", null)
+                        .WithMany()
+                        .HasForeignKey("HabitsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Habit_App_Models.ApplicationUser", "User")
-                        .WithMany("UserHabits")
-                        .HasForeignKey("UserId")
+                    b.HasOne("Habit_App_Models.ApplicationUser", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Habit");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -348,16 +338,6 @@ namespace Habit_App_Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Habit_App_Models.Habit", b =>
-                {
-                    b.Navigation("UserHabits");
-                });
-
-            modelBuilder.Entity("Habit_App_Models.ApplicationUser", b =>
-                {
-                    b.Navigation("UserHabits");
                 });
 #pragma warning restore 612, 618
         }

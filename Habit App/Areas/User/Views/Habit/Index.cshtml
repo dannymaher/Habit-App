@@ -1,0 +1,52 @@
+﻿@using Habit_App_Models.ViewModels;
+@model List<HabitIndexVM>
+
+<div class="row pb-3">
+    <div class="col-9">
+        <h3>List of all habits</h3>
+    </div>
+    <div class="col-3">
+        <a  asp-action="create" class="btn btn-primary"></a>
+    </div>
+</div>
+<div class="row pb-3">
+    @foreach(var habit in Model)
+    {
+        <div class="col-lg-3 col-sm-6 ">
+            <div class=" row p-2">
+                <div class=" col-12 p-1 ">
+                    <div class="card h-100 border-0 p-3 shadow border-top border-5 rounded  ">
+                      
+                       
+                       <img src="https://placehold.co/500x600/png" class="card-img-top rounded" />
+                        
+                        <div class="card-body pb-0 flex-fill">
+                            <div class="pl-1">
+                                <p class="card-title h5 text-dark opacity-75 text-uppercase text-center">@habit.Name</p>
+                                
+                            </div>
+                          
+                        </div>
+                        <div>
+                            <a asp-action="Edit" asp-route-Id="@habit.Id" class="btn btn-primary bg-gradient border-0 form-control">Edit</a>
+                        </div>
+                        @if (habit.isSubscribed)
+                        {
+                            <div>
+                                <a asp-action="Remove" asp-route-Id="@habit.Id" class="btn btn-danger bg-gradient border-0 form-control">Remove Habit</a>
+                            </div>
+                        }
+                        else
+                        {
+                            <div>
+                                <a asp-action="Add" asp-route-Id="@habit.Id" class="btn btn-primary bg-gradient border-0 form-control">Add Habit</a>
+                            </div>
+                        }
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>

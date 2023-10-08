@@ -1,5 +1,6 @@
 ﻿using Habit_App_Data.Repository.IRepository;
 using Habit_App_Models;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,11 @@ namespace Habit_App_Data.Repository
         public void Update(ApplicationUser user)
         {
             _context.Update(user);
+        }
+        public ApplicationUser GetUserWithHabits(string userId)
+        {
+            return _context.Users.Include(c => c.UserHabits).ThenInclude(u => u.Habit).Where(x => x.Id == userId).FirstOrDefault();
+
         }
     }
 }

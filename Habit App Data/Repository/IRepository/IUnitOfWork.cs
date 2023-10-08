@@ -8,7 +8,8 @@ namespace Habit_App_Data.Repository.IRepository
 {
     public interface IUnitOfWork
     {
-        IApplicationUserRepository ApplicationUserRepository { get; }
+        IApplicationUserRepository ApplicationUsers { get; }
+        IHabitRepository Habits { get; }
         void Save();
     }
 }

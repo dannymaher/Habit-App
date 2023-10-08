@@ -47,6 +47,7 @@ namespace Habit_App_Data.Repository
                     .Split(new Char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
                 {
                     query = query.Include(property);
+                    
                 }
             }
             return query.FirstOrDefault();

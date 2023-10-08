@@ -9,8 +9,8 @@ namespace Habit_App_Data.Repository
 {
     public class UnitOfWork : IUnitOfWork
     {
-        public IApplicationUserRepository ApplicationUserRepository { get; private set; }
-
+        public IApplicationUserRepository ApplicationUsers { get; private set; }
+        public IHabitRepository Habits { get; private set; }
 
         private ApplicationDbContext _db;
 
@@ -18,7 +18,8 @@ namespace Habit_App_Data.Repository
         {
             
             _db = db;
-            ApplicationUserRepository = new ApplicationUserRepository(_db);
+            ApplicationUsers = new ApplicationUserRepository(_db);
+            Habits = new HabitRepository(_db);
         }
 
         public void Save()

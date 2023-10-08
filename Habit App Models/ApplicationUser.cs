@@ -1,19 +1,17 @@
 ﻿
 
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Habit_App_Models
 {
     public class ApplicationUser : IdentityUser
     {
-        //[Required]
-        //[DisplayName("First Name")]
-        //public string FirstName { get; set; }
-        //[Required]
-        //[DisplayName("Last Name")]
-        //public string LastName { get; set; }
+        //[ValidateNever ]
+        public List<ApplicationUserHabit> UserHabits { get; set; }
     }
 
 }

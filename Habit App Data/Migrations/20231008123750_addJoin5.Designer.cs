@@ -4,6 +4,7 @@ using Habit_App_Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Habit_App_Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231008123750_addJoin5")]
+    partial class addJoin5
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,18 +33,21 @@ namespace Habit_App_Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("ApplicationUserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AspNetUsersId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("HabitId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("HabitId");
+                    b.HasIndex("AspNetUsersId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("HabitId");
 
                     b.ToTable("ApplicationUserHabit");
                 });
@@ -282,15 +288,13 @@ namespace Habit_App_Data.Migrations
 
             modelBuilder.Entity("Habit_App_Models.ApplicationUserHabit", b =>
                 {
+                    b.HasOne("Habit_App_Models.ApplicationUser", "User")
+                        .WithMany("UserHabits")
+                        .HasForeignKey("AspNetUsersId");
+
                     b.HasOne("Habit_App_Models.Habit", "Habit")
                         .WithMany("UserHabits")
                         .HasForeignKey("HabitId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Habit_App_Models.ApplicationUser", "User")
-                        .WithMany("UserHabits")
-                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

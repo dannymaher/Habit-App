@@ -11,5 +11,6 @@ namespace Habit_App_Data.Repository.IRepository
     public interface IApplicationUserRepository : IRepository<ApplicationUser>
     {
         void Update(ApplicationUser applicationUser);
+        ApplicationUser GetUserWithHabits(string id);
     }
 }

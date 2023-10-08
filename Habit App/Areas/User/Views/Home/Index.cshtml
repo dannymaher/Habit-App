@@ -1,8 +1,40 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@using Habit_App_Models;
+@model ApplicationUser 
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row pb-3">
+    <div class="col-9">
+        <h3>List of all habits</h3>
+    </div>
+    <div class="col-3">
+        <a asp-action="create" class="btn btn-primary"></a>
+    </div>
+    @foreach (var habit in Model.UserHabits)
+    {
+        <div class="col-lg-3 col-sm-6 ">
+            <div class=" row p-2">
+                <div class=" col-12 p-1 ">
+                    <div class="card h-100 border-0 p-3 shadow border-top border-5 rounded  ">
+
+
+                        <img src="https://placehold.co/500x600/png" class="card-img-top rounded" />
+
+                        <div class="card-body pb-0 flex-fill">
+                            <div class="pl-1">
+                                <p class="card-title h5 text-dark opacity-75 text-uppercase text-center">@habit.Habit.Name</p>
+
+                            </div>
+
+                        </div>
+                        <div>
+                            @* <a asp-action="Edit" asp-route-Id="@habit.Id" class="btn btn-primary bg-gradient border-0 form-control">Edit</a> *@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+<div class="row pb-3">
+   
+
 </div>
