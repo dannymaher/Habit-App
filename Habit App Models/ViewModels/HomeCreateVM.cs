@@ -7,14 +7,13 @@ using System.Threading.Tasks;
 
 namespace Habit_App_Models.ViewModels
 {
-    public class HabitIndexVM
+    public class HomeCreateVM
     {
-        public int Id { get; set; }
+        public int? HabitId { get; set; }
+        public string HabitName { get; set; }
+        public string UserId { get; set; }
         [Required]
-        public string Name { get; set; }
-        [Required]
+        public float MeasurementUnit { get; set; }
         
-        public string Measurement { get; set; }
-        public bool isSubscribed { get; set; }
     }
 }

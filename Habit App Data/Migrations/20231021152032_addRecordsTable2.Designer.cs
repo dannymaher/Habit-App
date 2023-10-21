@@ -4,6 +4,7 @@ using Habit_App_Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Habit_App_Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231021152032_addRecordsTable2")]
+    partial class addRecordsTable2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -53,9 +56,6 @@ namespace Habit_App_Data.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("datetime2");
 
                     b.Property<int>("HabitId")
                         .HasColumnType("int");
@@ -338,7 +338,7 @@ namespace Habit_App_Data.Migrations
                         .IsRequired();
 
                     b.HasOne("Habit_App_Models.ApplicationUser", "User")
-                        .WithMany("UserHabitRecords")
+                        .WithMany("userHabitRecords")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -408,9 +408,9 @@ namespace Habit_App_Data.Migrations
 
             modelBuilder.Entity("Habit_App_Models.ApplicationUser", b =>
                 {
-                    b.Navigation("UserHabitRecords");
-
                     b.Navigation("UserHabits");
+
+                    b.Navigation("userHabitRecords");
                 });
 #pragma warning restore 612, 618
         }

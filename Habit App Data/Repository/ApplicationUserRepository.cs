@@ -25,5 +25,15 @@ namespace Habit_App_Data.Repository
             return _context.Users.Include(c => c.UserHabits).ThenInclude(u => u.Habit).Where(x => x.Id == userId).FirstOrDefault();
 
         }
+        public ApplicationUser GetUserWithHabitRecords(string userId, bool tracked = false)
+        {
+            if (!tracked)
+            {
+                dbSet.AsNoTracking();
+
+            }
+            
+            return _context.Users.Include(c => c.UserHabits).ThenInclude(u => u.Habit).ThenInclude(u => u.RecordHabits).Where(x => x.Id == userId).FirstOrDefault();
+        }
     }
 }

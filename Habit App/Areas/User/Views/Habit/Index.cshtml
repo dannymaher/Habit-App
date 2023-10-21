@@ -1,4 +1,6 @@
 ﻿@using Habit_App_Models.ViewModels;
+
+
 @model List<HabitIndexVM>
 
 <div class="row pb-3">
@@ -6,7 +8,7 @@
         <h3>List of all habits</h3>
     </div>
     <div class="col-3">
-        <a  asp-action="create" class="btn btn-primary"></a>
+        <a  asp-action="create" class="btn btn-primary">+</a>
     </div>
 </div>
 <div class="row pb-3">
@@ -27,9 +29,12 @@
                             </div>
                           
                         </div>
-                        <div>
-                            <a asp-action="Edit" asp-route-Id="@habit.Id" class="btn btn-primary bg-gradient border-0 form-control">Edit</a>
-                        </div>
+                        @if (User.IsInRole(Habit_App_Utility.SD.ROLE_ADMIN)){
+                            <div>
+                                <a asp-action="Edit" asp-route-Id="@habit.Id" class="btn btn-primary bg-gradient border-0 form-control">Edit</a>
+                            </div>
+                        }
+                        
                         @if (habit.isSubscribed)
                         {
                             <div>

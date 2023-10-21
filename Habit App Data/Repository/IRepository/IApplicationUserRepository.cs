@@ -12,5 +12,6 @@ namespace Habit_App_Data.Repository.IRepository
     {
         void Update(ApplicationUser applicationUser);
         ApplicationUser GetUserWithHabits(string id);
+        ApplicationUser GetUserWithHabitRecords(string userId,bool tracked = false);
     }
 }

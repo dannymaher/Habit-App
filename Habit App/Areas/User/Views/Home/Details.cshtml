@@ -1,0 +1,105 @@
+﻿@using Habit_App_Models.ViewModels;
+
+@model HomeDetailsVM
+@* <div class="card">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h2 class="text-white py-2">Edit Habit</h2>
+        </div>
+        <div class="card-body">
+            <form method="post" class="row">
+                <div class="form-floating py-2 col-12">
+                    <input asp-for=Name class="border-0 shadow form-control" />
+                    <label asp-for=Name class=" ms-2"></label>
+
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-floating py-2 col-12">
+                    <input asp-for=Measurement class="border-0 shadow form-control" />
+                    <label asp-for=Measurement class=" ms-2"></label>
+
+                    <span asp-validation-for="Measurement" class="text-danger"></span>
+                </div>
+                <button type="submit" class="btn btn-primary form-control">Create</button>
+            </form>
+        </div>
+
+    </div>
+ *@
+<div>
+    <a asp-route-id="@Model.HabitId" asp-action="create" class="btn btn-primary">+</a>
+</div>
+<div id="chart_div" style="height:500px"></div>
+@foreach (var Record in Model.Records)
+{
+    <p>@Record.MeasurementUnit</p>
+}
+<hr />
+@foreach (var chartData in Model.ChartRecords)
+{
+    <p>@chartData.MeasurementUnit</p>
+}
+
+@section scripts{
+    @{
+        <partial name="_ValidationScriptsPartial" />
+    }
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+        google.charts.load('current', {
+            packages: ['corechart', 'bar']
+        });
+        google.charts.setOnLoadCallback(LoadData);
+
+        function LoadData() {
+            $.ajax({
+
+                url: '/user/home/getrecordsbydate?id=${@Model.HabitId}',
+                dataType: "json",
+                type: "GET",
+                error: function (xhr, status, error) {
+                    var err = eval("(" + xhr.responseText + ")");
+                    toastr.error(err.message);
+                },
+                success: function (data) {
+                    PopulationChart(data);
+                    return false;
+                }
+            });
+            return false;
+        }
+
+        function PopulationChart(data) {
+            var dataArray = [
+                ['amount','date']
+            ];
+            $.each(data, function (i, item) {
+                dataArray.push([item.date, item.measurementUnit]);
+            });
+            var data = google.visualization.arrayToDataTable(dataArray);
+            var options = {
+                title: 'Population of Largest Cities of Odisha ',
+                chartArea: {
+                    width: '50%'
+                },
+                colors: ['#b0120a', '#7b1fa2', '#ffab91', '#d95f02'],
+                hAxis: {
+                    title: 'City',
+                    minValue: 0
+                },
+                vAxis: {
+                    title: 'Total Population',
+                    minValue: 0
+                }
+            };
+            var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+
+            chart.draw(data, options);
+            return false;
+        }
+
+
+    </script>
+
+
+}

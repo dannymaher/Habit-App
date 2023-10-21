@@ -6,7 +6,7 @@
         <h3>List of all habits</h3>
     </div>
     <div class="col-3">
-        <a asp-action="create" class="btn btn-primary"></a>
+        <a asp-action="create" class="btn btn-primary">+</a>
     </div>
     @foreach (var habit in Model.UserHabits)
     {
@@ -26,7 +26,7 @@
 
                         </div>
                         <div>
-                            @* <a asp-action="Edit" asp-route-Id="@habit.Id" class="btn btn-primary bg-gradient border-0 form-control">Edit</a> *@
+                             <a asp-action="Details" asp-route-Id="@habit.HabitId" class="btn btn-primary bg-gradient border-0 form-control">History</a> 
                         </div>
                     </div>
                 </div>

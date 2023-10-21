@@ -17,5 +17,6 @@ namespace Habit_App_Models
         public string Measurement { get; set; }
 
         public List<ApplicationUserHabit> UserHabits { get; set; }
+        public List<ApplicationUserHabitRecord> RecordHabits { get; set;}
     }
 }
