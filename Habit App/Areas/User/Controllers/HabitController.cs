@@ -70,11 +70,13 @@ namespace Habit_App.Areas.User.Controllers
         {
             _unitOfWork.Habits.Add(habit);
             _unitOfWork.Save();
+            TempData["Success"] = habit.Name + "habit added";
             return RedirectToAction("Index");
         }
         public IActionResult Edit(int? id)
         {
             Habit habit = _unitOfWork.Habits.Get(x => x.Id == id);
+            TempData["Success"] = habit.Name + "habit updated";
             return View(habit);
         }
         [HttpPost]
@@ -110,12 +112,14 @@ namespace Habit_App.Areas.User.Controllers
             
             _unitOfWork.ApplicationUsers.Update(user);
             _unitOfWork.Save();
+            TempData["success"] = "Subscribed to " + habit.Name;
             return RedirectToAction("Index");
         }
         
         public IActionResult Remove(int? id)
         {
-            Habit habits = _unitOfWork.Habits.Get(x => x.Id == id);
+            Habit habit = _unitOfWork.Habits.Get(x => x.Id == id);
+            
             var ClaimsIdentity = (ClaimsIdentity)User.Identity;
             var UserId = ClaimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
             
@@ -123,6 +127,7 @@ namespace Habit_App.Areas.User.Controllers
             user.UserHabits = user.UserHabits.Where(x => x.HabitId != id).ToList();
             _unitOfWork.ApplicationUsers.Update(user);
             _unitOfWork.Save();
+            TempData["success"] = "Unsubscribed to " + habit.Name;
             return RedirectToAction("Index");
         }
     }

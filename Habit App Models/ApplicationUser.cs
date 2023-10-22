@@ -13,6 +13,9 @@ namespace Habit_App_Models
         //[ValidateNever ]
         public List<ApplicationUserHabit> UserHabits { get; set; }
         public List<ApplicationUserHabitRecord> UserHabitRecords { get; set; }
+
+        [NotMapped]
+        public string Role { get; set; }
     }
 
 }

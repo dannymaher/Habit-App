@@ -78,7 +78,7 @@ namespace Habit_App.Areas.User.Controllers
 
             var ClaimsIdentity = (ClaimsIdentity)User.Identity;
             var UserId = ClaimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
-            Habit Habit = _unitOfWork.Habits.Get(x => x.Id == id);
+            Habit Habit = _unitOfWork.Habits.Get(x => x.Id == id,includeProperties: "UserHabits");
             HomeCreateVM vm = new HomeCreateVM()
             {
                 HabitId = id,
@@ -108,6 +108,7 @@ namespace Habit_App.Areas.User.Controllers
             });
             _unitOfWork.ApplicationUsers.Update(user);
             _unitOfWork.Save();
+            TempData["Success"] = "Record added";
             return RedirectToAction("Details",new {id=model.HabitId});
 
         }
