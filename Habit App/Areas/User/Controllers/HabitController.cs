@@ -5,6 +5,7 @@ using Habit_App_Models;
 using Habit_App_Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -53,7 +54,7 @@ namespace Habit_App.Areas.User.Controllers
                 
                 counter++;
             }
-           
+            
             return View(HabitVMList);
         }
 

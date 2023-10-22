@@ -54,7 +54,7 @@ namespace Habit_App.Areas.User.Controllers
             else
             {
                 list = list.Where(x => x.HabitId == id).ToList();
-                result = user.UserHabitRecords.GroupBy(x => x.Date).Select(group => new ApplicationUserHabitRecord
+                result = list.GroupBy(x => x.Date).Select(group => new ApplicationUserHabitRecord
                 {
                     Date = group.Key,
                     MeasurementUnit = group.Select(y => y.MeasurementUnit).Sum()
@@ -116,9 +116,10 @@ namespace Habit_App.Areas.User.Controllers
             return View();
         }
         [HttpGet]
-        public JsonResult GetRecordsByDate(int? id)
+        public JsonResult GetRecordsByDate(int? id, bool filter = false, int filterDays = 7)
         {
             List<ApplicationUserHabitRecord> result = new List<ApplicationUserHabitRecord> { };
+            List<ApplicationUserHabitRecord> list = new List<ApplicationUserHabitRecord> { };
             var ClaimsIdentity = (ClaimsIdentity)User.Identity;
             var UserId = ClaimsIdentity.FindFirst(ClaimTypes.NameIdentifier).Value;
             ApplicationUser user = _unitOfWork.ApplicationUsers.GetUserWithHabitRecords(UserId);
@@ -126,11 +127,17 @@ namespace Habit_App.Areas.User.Controllers
             {
                 return Json(result);
             }
-            result = user.UserHabitRecords.GroupBy(x => x.Date).Select(group => new ApplicationUserHabitRecord
+            list = user.UserHabitRecords.Where(x => x.HabitId == id).ToList();
+            result = list.GroupBy(x => x.Date).Select(group => new ApplicationUserHabitRecord
             {
                 Date = group.Key,
                 MeasurementUnit = group.Select(y => y.MeasurementUnit).Sum()
-            }).ToList();
+            }).OrderBy(x => x.Date).ToList();
+            if (filter)
+            {
+                result = result.Where(x => x.Date > DateOnly.FromDateTime(DateTime.Now.AddDays(filterDays * -1))).ToList();
+            }
+
             return Json(result);
         }
         

@@ -29,6 +29,21 @@
 <div>
     <a asp-route-id="@Model.HabitId" asp-action="create" class="btn btn-primary">+</a>
 </div>
+<div class="row">
+    <div class="col-3">
+        <button id="all-time">All Time</button>
+    </div>
+    <div class="col-3">
+        <button id="year">By year</button>
+    </div>
+    <div class="col-3">
+        <button id="month">By Month</button>
+    </div>
+    <div class="col-3">
+        <button id="week">By Week</button>
+    </div>
+
+</div>
 <div id="chart_div" style="height:500px"></div>
 @foreach (var Record in Model.Records)
 {
@@ -44,17 +59,46 @@
     @{
         <partial name="_ValidationScriptsPartial" />
     }
+
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script>
-        google.charts.load('current', {
-            packages: ['corechart', 'bar']
-        });
+        document.getElementById("year").onclick = function filterByYear() {
+
+            loadGoogle();
+            google.charts.setOnLoadCallback(LoadFilterData(true, 365));
+
+        }
+        document.getElementById("week").onclick = function filterByWeek() {
+
+            loadGoogle();
+            google.charts.setOnLoadCallback(LoadFilterData(true, 7));
+
+        }
+        document.getElementById("month").onclick = function filterByMonth() {
+
+            loadGoogle();
+            google.charts.setOnLoadCallback(LoadFilterData(true, 30));
+
+        }
+        document.getElementById("all-time").onclick = function noFilter() {
+
+            loadGoogle();
+            google.charts.setOnLoadCallback(LoadData);
+
+        }
+        function loadGoogle(){
+            google.charts.load('current', {
+                packages: ['corechart', 'bar']
+            });
+        }
+        loadGoogle();
+        
         google.charts.setOnLoadCallback(LoadData);
 
         function LoadData() {
             $.ajax({
 
-                url: '/user/home/getrecordsbydate?id=${@Model.HabitId}',
+                url: '/user/home/getrecordsbydate?id=@Model.HabitId',
                 dataType: "json",
                 type: "GET",
                 error: function (xhr, status, error) {
@@ -68,27 +112,44 @@
             });
             return false;
         }
+        function LoadFilterData(filter, days) {
 
+            $.ajax({
+
+                url: '/user/home/getrecordsbydate?id=@Model.HabitId&filter=' + filter + '&filterDays=' + days,
+                dataType: "json",
+                type: "GET",
+                error: function (xhr, status, error) {
+                    var err = eval("(" + xhr.responseText + ")");
+                    toastr.error(err.message);
+                },
+                success: function (data) {
+                    PopulationChart(data);
+                    return false;
+                }
+            });
+            return false;
+        }
         function PopulationChart(data) {
             var dataArray = [
-                ['amount','date']
+                ['date', 'amount']
             ];
             $.each(data, function (i, item) {
                 dataArray.push([item.date, item.measurementUnit]);
             });
             var data = google.visualization.arrayToDataTable(dataArray);
             var options = {
-                title: 'Population of Largest Cities of Odisha ',
+                title: 'History ',
                 chartArea: {
                     width: '50%'
                 },
                 colors: ['#b0120a', '#7b1fa2', '#ffab91', '#d95f02'],
                 hAxis: {
-                    title: 'City',
+                    title: 'Date',
                     minValue: 0
                 },
                 vAxis: {
-                    title: 'Total Population',
+                    title: 'Daily Total',
                     minValue: 0
                 }
             };
